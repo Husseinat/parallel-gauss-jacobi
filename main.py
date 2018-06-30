@@ -12,4 +12,4 @@ except EOFError:
 print(solution)
 print(matrix)
 
-GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(equations).solve(3)
+GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).withMaxIterations(3).solve()
