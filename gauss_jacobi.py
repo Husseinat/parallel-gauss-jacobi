@@ -12,12 +12,15 @@ class GaussJacobiBuilder:
         return GaussJacobiBuilder()
 
     def iteration(self, line, value):
-        time.sleep(0.1)
         sum = self.solution[line]
-        return (line, sum)
+        for i in range(len(self.solution)):
+            if i != line:
+                sum -= self.equationsMatrix[line][i]*self.itResult[i]
+        return (line, sum/self.equationsMatrix[line][line])
 
     def callback(self, doneFuture):
-        print("Finished task! With result " + str(doneFuture.result()))
+        line, result = doneFuture.result()
+        self.itResult[line] = result
 
     def verify(self):
         # verification method to run before solving
@@ -42,21 +45,19 @@ class GaussJacobiBuilder:
 
         self.maxIterations = maxIterations
 
+        #initializing iteration result array
+        self.itResult = [0 for eq in range(len(self.solution))]
+
         for i in range(maxIterations):
             # initializing one ThreadPoolExecutor
             executor = ThreadPoolExecutor()
-
-            #initializing iteration result array
-            self.itResult = [0 for eq in range(len(self.solution))]
 
             #populating the ThreadPoolExecutor
             for eq in range(len(self.solution)):
                 executor.submit(self.iteration, eq, 0).add_done_callback(self.callback)
 
-            print("Waiting the iteration to finish...")
-
             # the executor will be finished once all tasks are done
             executor.shutdown(wait=True)
 
-            print("Finished!")
+            print(self.itResult)
         return self.itResult

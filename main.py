@@ -15,4 +15,4 @@ print(solution)
 print(matrix)
 
 # build and solve
-GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).solve(1)
+GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).solve(20)
