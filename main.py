@@ -1,7 +1,9 @@
 from gauss_jacobi import GaussJacobiBuilder
 
+# input of solution array
 solution = [int(num) for num in input().strip().split(' ')]
 
+# input of matrix
 matrix = []
 try:
     while True:
@@ -12,4 +14,5 @@ except EOFError:
 print(solution)
 print(matrix)
 
-GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).withMaxIterations(3).solve()
+# build and solve
+GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).solve(1)

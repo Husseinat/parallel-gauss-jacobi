@@ -8,22 +8,24 @@ import time
 
 class GaussJacobiBuilder:
 
+    def createSolver():
+        return GaussJacobiBuilder()
+
     def iteration(self, line, value):
-        time.sleep(2)
-        return 1
+        time.sleep(0.1)
+        sum = self.solution[line]
+        return (line, sum)
 
     def callback(self, doneFuture):
         print("Finished task! With result " + str(doneFuture.result()))
 
-    def verify():
+    def verify(self):
         # verification method to run before solving
         # lines criteria
         # match solution size and matrix size
         # matrix and solution has been set
-        pass
+        return True
 
-    def createSolver():
-        return GaussJacobiBuilder()
 
     def withEquations(self, equationsMatrix):
         self.equationsMatrix = equationsMatrix
@@ -33,24 +35,28 @@ class GaussJacobiBuilder:
         self.solution = solution
         return self
 
-    def withMaxIterations(self, maxIterations):
+    def solve(self, maxIterations):
+        # make verification
+        if not self.verify():
+            return None
+
         self.maxIterations = maxIterations
-        return self
 
-    def solve(self):
-        # initializing one ThreadPoolExecutor
-        executor = ThreadPoolExecutor()
+        for i in range(maxIterations):
+            # initializing one ThreadPoolExecutor
+            executor = ThreadPoolExecutor()
 
-        #initializing iteration counter
-        self.itCounter = [0 for eq in range(len(self.solution))]
+            #initializing iteration result array
+            self.itResult = [0 for eq in range(len(self.solution))]
 
-        #populating the ThreadPoolExecutor
-        for eq in range(len(self.solution)):
-            executor.submit(self.iteration, eq, 0).add_done_callback(self.callback)
+            #populating the ThreadPoolExecutor
+            for eq in range(len(self.solution)):
+                executor.submit(self.iteration, eq, 0).add_done_callback(self.callback)
 
-        print("Waiting the operation to finish...")
+            print("Waiting the iteration to finish...")
 
-        # the executor will be finished once all tasks are done
-        executor.shutdown(wait=True)
+            # the executor will be finished once all tasks are done
+            executor.shutdown(wait=True)
 
-        print("Finished!")
+            print("Finished!")
+        return self.itResult
