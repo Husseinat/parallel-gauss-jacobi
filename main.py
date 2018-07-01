@@ -11,8 +11,6 @@ try:
 except EOFError:
     pass
 
-print(solution)
-print(matrix)
-
 # build and solve
-GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).solve(20)
+result = GaussJacobiBuilder.createSolver().withSolution(solution).withEquations(matrix).solve(20)
+print(result)
