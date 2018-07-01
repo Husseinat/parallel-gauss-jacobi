@@ -88,7 +88,7 @@ class GaussJacobiBuilder:
 
         for i in range(maxIterations):
             # initializing one ThreadPoolExecutor
-            executor = ThreadPoolExecutor()
+            executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
 
             # populating the ThreadPoolExecutor
             for eq in range(len(self.solution)):
